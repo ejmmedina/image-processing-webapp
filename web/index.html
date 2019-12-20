@@ -3,8 +3,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css" href="css/slider.css">
-    <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
+    <link rel="newer stylesheet" type="text/css" href="css/slider.css">
     <style>
         body {
             height: 100%;
@@ -163,7 +162,7 @@
             </div>
         </div>
 
-        <div id="morphological-operations">
+        <!-- <div id="morphological-operations">
             <h4>Morphological Operations</h4>
             <p>When the colors of the images are too mixed, i.e. the foreground is not easily separable from the background using thresholding techniques, some operations can be done on the mask in order to improve the results.
                There are many operations but most of them can be traced back to two fundamental operations: erosion and dilation.
@@ -190,7 +189,7 @@
                     <img src="" alt="Select image first" id="morphed">
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -227,32 +226,32 @@
             )
         }
 
-        function erodeImage() {
-            let rad = document.querySelector("input#erosion").value
-            // console.log(rad)
-            let selImg = document.querySelector("select#img").value
-            fetch('/morph/erosion/'+selImg+'/'+rad).then(
-                function (r){
-                    document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "erosion.png"
-                }
-            )
-        }
+        // function erodeImage() {
+        //     let rad = document.querySelector("input#erosion").value
+        //     // console.log(rad)
+        //     let selImg = document.querySelector("select#img").value
+        //     fetch('/morph/erosion/'+selImg+'/'+rad).then(
+        //         function (r){
+        //             document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "erosion.png"
+        //         }
+        //     )
+        // }
 
-        function dilateImage() {
-            let rad = document.querySelector("input#dilation").value
-            // console.log(rad)
-            let selImg = document.querySelector("select#img").value
-            fetch('/morph/dilation/'+selImg+'/'+rad).then(
-                function (r){
-                    document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
-                }
-            )
-        }
+        // function dilateImage() {
+        //     let rad = document.querySelector("input#dilation").value
+        //     // console.log(rad)
+        //     let selImg = document.querySelector("select#img").value
+        //     fetch('/morph/dilation/'+selImg+'/'+rad).then(
+        //         function (r){
+        //             document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
+        //         }
+        //     )
+        // }
 
         document.querySelector("button#get-mask").addEventListener("click", getMask)
         document.querySelector("button#apply-mask").addEventListener("click", applyMask)
-        document.querySelector("button#erode").addEventListener("click", erodeImage)
-        document.querySelector("button#dilate").addEventListener("click", dilateImage)
+        // document.querySelector("button#erode").addEventListener("click", erodeImage)
+        // document.querySelector("button#dilate").addEventListener("click", dilateImage)
 
     </script>
 

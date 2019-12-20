@@ -45,38 +45,38 @@ def apply_mask(img, R_min, R_max, G_min, G_max, B_min, B_max):
     return ('', 204)
 
 
-def morph_delete_files():
-    files = glob.glob(f'web/data/morph/morph_new_*')
-    os.remove(files[0])
+# def morph_delete_files():
+#     files = glob.glob(f'web/data/morph/morph_new_*')
+#     os.remove(files[0])
 
 
-operations = {'dilation':binary_dilation, 'erosion':binary_erosion}
-@app.route('/morph/<string:process>/<string:img>/<int:radius>')
-def morph(process, img, radius):
-    op = operations[process]
-    selem = np.zeros((50, 50))
+# operations = {'dilation':binary_dilation, 'erosion':binary_erosion}
+# @app.route('/morph/<string:process>/<string:img>/<int:radius>')
+# def morph(process, img, radius):
+#     op = operations[process]
+#     selem = np.zeros((50, 50))
 
-    # mask = imageio.imread(filenames[-1])
-    files = glob.glob(f'web/data/morph/morph_new*')
-    if files:
-        mask = imageio.imread(files[0])
-    else:
-        mask = imageio.imread(f'web/data/morph/morph_init.png')
-    morph_delete_files()
-    ci = 25
-    cj = 25
-    # Create index arrays to z
-    I,J=np.meshgrid(np.arange(50),np.arange(50))
+#     # mask = imageio.imread(filenames[-1])
+#     files = glob.glob(f'web/data/morph/morph_new*')
+#     if files:
+#         mask = imageio.imread(files[0])
+#     else:
+#         mask = imageio.imread(f'web/data/morph/morph_init.png')
+#     morph_delete_files()
+#     ci = 25
+#     cj = 25
+#     # Create index arrays to z
+#     I,J=np.meshgrid(np.arange(50),np.arange(50))
 
-    # calculate distance of all points to centre
-    dist=np.sqrt((I-ci)**2+(J-cj)**2)
+#     # calculate distance of all points to centre
+#     dist=np.sqrt((I-ci)**2+(J-cj)**2)
 
-    # Assign value of 1 to those points where dist<cr:
-    selem[np.where(dist<=radius)]=1
-    mask_new = op(mask, selem)
-    imageio.imwrite(f"web/data/morph/morph_new_{img.replace('.','-')}-{radius}-{process}.png", mask_new.astype(np.uint8)*255)
-    # filenames.append("web/data/morph/morph_new_{img.replace('.','-')}-{radius}-{process}.png")
-    return ('', 204)
+#     # Assign value of 1 to those points where dist<cr:
+#     selem[np.where(dist<=radius)]=1
+#     mask_new = op(mask, selem)
+#     imageio.imwrite(f"web/data/morph/morph_new_{img.replace('.','-')}-{radius}-{process}.png", mask_new.astype(np.uint8)*255)
+#     # filenames.append("web/data/morph/morph_new_{img.replace('.','-')}-{radius}-{process}.png")
+#     return ('', 204)
 
 
 # @app.route('/maskthres')
