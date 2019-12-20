@@ -128,11 +128,11 @@
         <br>
             Please take these steps:
             <ol>
-                <li>Select Image</li>
-                <li>Tweak the threshold range of each channel</li>
-                <li>Get the mask</li>
+                <li>Select the image to process</li>
+                <li>Tweak the threshold range of each channel for filtering of the background</li>
+                <li>Get the mask that will be used for filtering</li>
                 <li>Apply the mask on the chosen image</li>
-                <li>Apply erosion OR dilation of chosen radius on the mask and apply the mask</li>
+                <li>Apply erosion OR dilation of chosen radius on the mask and apply the morphed mask</li>
             </ol>
         </p>
             
@@ -207,13 +207,17 @@
             </p>
             <div class="morph">
                 <div id="dilateerode">
-                    <input type="range" min="1" max="20" value="1" step="1" class="slider morph" id="erosion">
-                    <label for="erosion-slider" style="float: right;">Radius (erosion): 1px</label>
+                    <select id='dilateorerode'>
+                        <option value='dilation' selected>Dilate</option>
+                        <option value='erosion'>Erode</option>
+                    </select>
+                    <input type="range" min="1" max="20" value="1" step="1" class="slider morph" id="morph">
+                    <label for="morph-slider" style="float: right;">Radius (dilation): 1px</label>
                 </div>
-                <div id="dilateerode">
+                <!-- <div id="dilateerode">
                     <input type="range" min="1" max="20" value="1" step="1" class="slider morph" id="dilation">
                     <label for="dilation-slider" style="float: right;">Radius (dilation): 1px</label>
-                </div>
+                </div> -->
                 
                 <div class="threshold">
                     <div id="mask">
@@ -221,8 +225,6 @@
                             <img src="" id="morphed">
                         </div>
                     </div>
-                    <br>
-                    <br>
                     <div id="mask">
                         <div id="img-container">
                             <img src="" id="morphed-masked">
@@ -277,73 +279,67 @@
             )
         }
 
-        function erodeImage() {
-            let rad = document.querySelector("input#erosion").value
-            // console.log(rad)
+        function morphImage() {
+            let rad = document.querySelector("input#morph").value
+            let op = document.querySelector("select#dilateorerode").value
             let selImg = document.querySelector("select#img").value
-            fetch('/morph/erosion/'+selImg+'/'+rad).then(
+            fetch('/morph/'+ op + '/'+selImg+'/'+rad).then(
                 function (r){
-                    document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "erosion.png"
+                    document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + op + ".png"
                 }
             )
         }
 
-        function dilateImage() {
-            let rad = document.querySelector("input#dilation").value
-            // console.log(rad)
-            let selImg = document.querySelector("select#img").value
-            fetch('/morph/dilation/'+selImg+'/'+rad).then(
-                function (r){
-                    document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
-                }
-            )
-        }
+        // function dilateImage() {
+        //     let rad = document.querySelector("input#dilation").value
+        //     // console.log(rad)
+        //     let selImg = document.querySelector("select#img").value
+        //     fetch('/morph/dilation/'+selImg+'/'+rad).then(
+        //         function (r){
+        //             document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
+        //         }
+        //     )
+        // }
 
-        function erodeImageMask() {
-            let rad = document.querySelector("input#erosion").value
-            // console.log(rad)
+        function morphImageMask() {
+            let rad = document.querySelector("input#morph").value
+            let op = document.querySelector("select#dilateorerode").value
             let selImg = document.querySelector("select#img").value
-            // fetch('/apply_mask/erosion/'+selImg+'/'+rad).then(
-                // function (r){
             setTimeout(function(){
-                document.querySelector("img#morphed-masked").src = "data/masked_morphimg/morph_masked_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "erosion.png"
+                document.querySelector("img#morphed-masked").src = "data/masked_morphimg/morph_masked_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + op + ".png"
             }, 500);
-                // }
-            // )
         }
 
-        function dilateImageMask() {
-            let rad = document.querySelector("input#dilation").value
-            // console.log(rad)
-            let selImg = document.querySelector("select#img").value
-            // fetch('/apply_mask/dilation/'+selImg+'/'+rad).then(
-            //     function (r){
-            setTimeout(function(){
-                document.querySelector("img#morphed-masked").src = "data/masked_morphimg/morph_masked_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
-            }, 500);
-            //     }
-            // )
-        }
+        // function dilateImageMask() {
+        //     let rad = document.querySelector("input#dilation").value
+        //     // console.log(rad)
+        //     let selImg = document.querySelector("select#img").value
+        //     setTimeout(function(){
+        //         document.querySelector("img#morphed-masked").src = "data/masked_morphimg/morph_masked_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
+        //     }, 500);
+        // }
 
-        function changeRadiusErosion() {
-            let rad = document.querySelector("input#erosion").value
-            document.querySelector("input#erosion+label").innerText = "Radius (erosion): " + rad + "px"
+        function changeSliderDisplay() {
+            let rad = document.querySelector("input#morph").value
+            let op = document.querySelector("select#dilateorerode").value
+            document.querySelector("input#morph+label").innerText = "Radius (" + op + "): " + rad + "px"
         }
         
-        function changeRadiusDilation() {
-            let rad = document.querySelector("input#dilation").value
-            document.querySelector("input#dilation+label").innerText = "Radius (dilation): " + rad + "px"
-        }
+        // function changeRadiusDilation() {
+        //     let rad = document.querySelector("input#dilation").value
+        //     document.querySelector("input#dilation+label").innerText = "Radius (dilation): " + rad + "px"
+        // }
 
         document.querySelector("button#get-mask").addEventListener("click", getMask)
         document.querySelector("button#apply-mask").addEventListener("click", applyMask)
-        document.querySelector("input#erosion").addEventListener("change", erodeImage)
-        document.querySelector("input#dilation").addEventListener("change", dilateImage)
+        document.querySelector("input#morph").addEventListener("change", morphImage)
+        // document.querySelector("input#dilation").addEventListener("change", dilateImage)
 
-        document.querySelector("input#erosion").addEventListener("change", erodeImageMask)
-        document.querySelector("input#dilation").addEventListener("change", dilateImageMask)
-        document.querySelector("input#erosion").addEventListener("change", changeRadiusErosion)
-        document.querySelector("input#dilation").addEventListener("change", changeRadiusDilation)
+        document.querySelector("input#morph").addEventListener("change", morphImageMask)
+        // document.querySelector("input#dilation").addEventListener("change", dilateImageMask)
+        // document.querySelector("input#erosion").addEventListener("change", changeSliderDisplay)
+        document.querySelector("select#dilateorerode").addEventListener("change", changeSliderDisplay)
+        document.querySelector("input#morph").addEventListener("change", changeSliderDisplay)
         
 
     </script>
