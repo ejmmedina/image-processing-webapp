@@ -10,12 +10,12 @@
         }
         .slider::-webkit-slider-thumb {
             background: #575252;
-            width: 5px;
+            width: 10px;
         }
 
         .slider::-moz-range-thumb {
             background: #ffffff ;
-            width: 5px;
+            width: 10px;
         }
 
         .slider {
@@ -68,6 +68,8 @@
             float: left;
             position: fixed;
             height: 100%;
+            margin-left: 20px;
+            margin-top: 20px;
         }
 
         #results {
@@ -79,14 +81,16 @@
             z-index: 10;
         }
 
-        #mask, #dilateerode {
+        #mask {
             float: left;
             width: 50%;
             z-index: 10;
         }
+        
 
         #dilateerode{
             padding-right: 10px;
+            width: 80%;
         }
 
         .slider.morph {
@@ -95,10 +99,20 @@
             float: right;
         }
 
-        div#morphological-operations h4 {
+        div#morphological-operations h4{
             margin-top: 100px;
             padding-top: 250px;
         }
+
+        div#closing-remarks h4 {
+            margin-top: 100px;
+            padding-top: 250px;
+        }
+
+        p {
+            text-align: justify;
+        }
+        
 
     </style>
 </head>
@@ -121,25 +135,25 @@
     <div id='results'>
         <div id='thresholding'>
             <h4>Basic mask creation</h4>
-            <p>Similar to how eyes perceive colors using receptors (red, green, and blue cones), images are composed of three channels or dimension corresponding to RGB.
+            <p>Analogous to how eyes perceive colors using receptors (red, green, and blue cones), images are composed of three channels or dimension corresponding to RGB.
                 Using simple thresholding for one of these channels, certain pixels/parts in the image can be removed.
-                The sliders below set the range of values for red, green, and blue channels that will be retained in the image.
+                <br><br>The sliders below set the <b>range</b> of values for red, green, and blue channels that will be retained in the image.
             </p>
             <div>
                 <div class="slidecontainer">
-                    <label for="lower">Red Channel</label>
+                    <label for="lower" style="color: red;">Red Channel</label>
                     <br/>
                     <input type="range" min="0" max="255" value="50" class="slider red" id="lower">
                     <input type="range" min="0" max="255" value="255" class="slider red" id="higher">
                 </div>
                 <div class="slidecontainer">
-                    <label for="lower">Green Channel</label>
+                    <label for="lower" style="color: green;">Green Channel</label>
                     <br/>
                     <input type="range" min="0" max="255" value="50" class="slider green" id="lower">
                     <input type="range" min="0" max="255" value="255" class="slider green" id="higher">
                 </div>
                 <div class="slidecontainer">
-                    <label for="lower">Blue Channel</label>
+                    <label for="lower" style="color: blue;">Blue Channel</label>
                     <br/>
                     <input type="range" min="0" max="255" value="50" class="slider blue" id="lower">
                     <input type="range" min="0" max="255" value="255" class="slider blue" id="higher">
@@ -162,34 +176,53 @@
             </div>
         </div>
 
-        <!-- <div id="morphological-operations">
+        <div id="morphological-operations">
             <h4>Morphological Operations</h4>
             <p>When the colors of the images are too mixed, i.e. the foreground is not easily separable from the background using thresholding techniques, some operations can be done on the mask in order to improve the results.
                There are many operations but most of them can be traced back to two fundamental operations: erosion and dilation.
-              <b>Erosion</b> is the process of "enlarging" the background pixels, transforming any surrounding foreground pixel to background pixel.
+              <b>Erosion</b> is the process of "enlarging" the background pixels, transforming all the surrounding foreground pixels of a background pixel to background pixel.
               <b>Dilation</b> is the opposite, it enlarges the foreground pixels by transforming background to foreground.
-              Note that both operations have a concept of "surrounding" or a neighborhood.
+              Note that both operations have a concept of "surroundings" or a neighborhood.
               This is defined by a structuring element which is also a matrix of ones and zeros that take any shape.
               For this project, our structuring element will be a circle with radius set by the user.
             </p>
             <div class="morph">
                 <div id="dilateerode">
                     <input type="range" min="1" max="20" value="1" step="1" class="slider morph" id="erosion">
-                    <label for="erosion-slider" style="float: right;">Radius (erosion): 10px</label>
-                    <br>
-                    <button id="erode">Erode</button>
+                    <label for="erosion-slider" style="float: right;">Radius (erosion): 1px</label>
                 </div>
                 <div id="dilateerode">
                     <input type="range" min="1" max="20" value="1" step="1" class="slider morph" id="dilation">
-                    <label for="dilation-slider" style="float: right;">Radius (dilation): 10px</label>
-                    <br>
-                    <button id="dilate">Dilate</button>
+                    <label for="dilation-slider" style="float: right;">Radius (dilation): 1px</label>
                 </div>
-                <div id="morphed-container">
+                <!-- <div id="morphed-container">
                     <img src="" alt="Select image first" id="morphed">
+                </div> -->
+                
+                <div class="threshold">
+                    <div id="mask">
+                        <div id="img-container">
+                            <img src="" alt="Generate initial mask first" id="morphed">
+                        </div>
+                    </div>
+                    <div id="mask">
+                        <div id="img-container">
+                            <img src="" alt="Generate mask first" id="morphed-masked">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div> -->
+        </div>
+        <div id="closing-remarks">
+            <h4>Combination of operations</h4>
+            <p>In practice, a combination of these operations is usually done to process images.
+            The two most commonly used operations are <b>closing</b> and <b>opening</b> operators.
+            Closing, which is done by dilating then eroding the image, patches all holes in the image that are smaller than the structuring element.
+            Opening, on the other hand, is erosion followed by dilation which removes all blobs smaller than the structuring element.
+            More complicated operations like top-hat are also a combination of closing and opening.
+            So, in order to get the desired image, operations upon operations are performed on images.
+            </p>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -226,32 +259,69 @@
             )
         }
 
-        // function erodeImage() {
-        //     let rad = document.querySelector("input#erosion").value
-        //     // console.log(rad)
-        //     let selImg = document.querySelector("select#img").value
-        //     fetch('/morph/erosion/'+selImg+'/'+rad).then(
-        //         function (r){
-        //             document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "erosion.png"
-        //         }
-        //     )
-        // }
+        function erodeImage() {
+            let rad = document.querySelector("input#erosion").value
+            // console.log(rad)
+            let selImg = document.querySelector("select#img").value
+            fetch('/morph/erosion/'+selImg+'/'+rad).then(
+                function (r){
+                    document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "erosion.png"
+                }
+            )
+        }
 
-        // function dilateImage() {
-        //     let rad = document.querySelector("input#dilation").value
-        //     // console.log(rad)
-        //     let selImg = document.querySelector("select#img").value
-        //     fetch('/morph/dilation/'+selImg+'/'+rad).then(
-        //         function (r){
-        //             document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
-        //         }
-        //     )
-        // }
+        function dilateImage() {
+            let rad = document.querySelector("input#dilation").value
+            // console.log(rad)
+            let selImg = document.querySelector("select#img").value
+            fetch('/morph/dilation/'+selImg+'/'+rad).then(
+                function (r){
+                    document.querySelector("img#morphed").src = "data/morph/morph_new_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
+                }
+            )
+        }
+
+        function erodeImageMask() {
+            let rad = document.querySelector("input#erosion").value
+            // console.log(rad)
+            let selImg = document.querySelector("select#img").value
+            // fetch('/apply_mask/erosion/'+selImg+'/'+rad).then(
+                // function (r){
+            document.querySelector("img#morphed").src = "data/morph/morph_masked_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "erosion.png"
+                // }
+            // )
+        }
+
+        function dilateImageMask() {
+            let rad = document.querySelector("input#dilation").value
+            // console.log(rad)
+            let selImg = document.querySelector("select#img").value
+            // fetch('/apply_mask/dilation/'+selImg+'/'+rad).then(
+            //     function (r){
+            document.querySelector("img#morphed").src = "data/morph/morph_masked_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
+                // }
+            // )
+        }
+
+        function changeRadiusErosion() {
+            let rad = document.querySelector("input#erosion").value
+            document.querySelector("input#erosion+label").innerText = "Radius (erosion): " + rad + "px"
+        }
+        
+        function changeRadiusDilation() {
+            let rad = document.querySelector("input#dilation").value
+            document.querySelector("input#dilation+label").innerText = "Radius (dilation): " + rad + "px"
+        }
 
         document.querySelector("button#get-mask").addEventListener("click", getMask)
         document.querySelector("button#apply-mask").addEventListener("click", applyMask)
-        // document.querySelector("button#erode").addEventListener("click", erodeImage)
-        // document.querySelector("button#dilate").addEventListener("click", dilateImage)
+        document.querySelector("input#erosion").addEventListener("change", erodeImage)
+        document.querySelector("input#dilation").addEventListener("change", dilateImage)
+        document.querySelector("input#erosion").addEventListener("change", erodeImageMask)
+        document.querySelector("input#dilation").addEventListener("change", dilateImageMask)
+        document.querySelector("input#erosion").addEventListener("change", changeRadiusErosion)
+        document.querySelector("input#dilation").addEventListener("change", changeRadiusDilation)
+        
 
     </script>
 
