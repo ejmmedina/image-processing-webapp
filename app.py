@@ -81,6 +81,6 @@ def apply_morphed_mask(process, img, radius):
     mask = imageio.imread(f"web/data/morph/morph_new_{img.replace('.','-')}-{radius}-{process}.png")
     img_arr = imageio.imread(f'data/images/{img}')
     img_out = img_arr*(mask//255).reshape(*mask.shape, 1)
-    imageio.imwrite(f"web/data/morph/morph_masked_{img.replace('.','-')}-{radius}-{process}.png", img_out)
+    imageio.imwrite(f"web/data/masked_morphimg/morph_masked_{img.replace('.','-')}-{radius}-{process}.png", img_out)
     return ('', 204)
 # @app.route('/maskthres')
