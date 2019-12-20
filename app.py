@@ -37,6 +37,9 @@ def morph_delete_files():
     files = glob.glob(f'web/data/morph/*')
     for f in files:
         os.remove(f)
+    files = glob.glob(f'web/data/masked_morphimg/*')
+    for f in files:
+        os.remove(f)
 
 
 @app.route('/apply_mask/<string:img>/<int:R_min>/<int:R_max>/<int:G_min>/<int:G_max>/<int:B_min>/<int:B_max>')
@@ -72,6 +75,7 @@ def morph(process, img, radius):
     selem[np.where(dist<=radius)]=1
     mask_new = op(mask, selem)
     imageio.imwrite(f"web/data/morph/morph_new_{img.replace('.','-')}-{radius}-{process}.png", mask_new.astype(np.uint8)*255)
+    
     apply_morphed_mask(process, img, radius)
     return ('', 204)
 

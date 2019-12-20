@@ -123,7 +123,7 @@
             With emergence of deep learning architectures like Mask R-CNN, this process has become more accurate, overshadowing traditional image segmentation techniques.
         <br>
             However, for simple images, these traditional techniques are sufficient, which will be explored in this project.</p>
-        <h4>1. Select Image</h4>
+        <h4>Select Image</h4>
         <select name="img" id="img">
             <option value="none" disabled hidden selected>--SELECT IMAGE--</option> 
         </select>
@@ -134,7 +134,7 @@
     </div>
     <div id='results'>
         <div id='thresholding'>
-            <h4>2. Basic mask creation</h4>
+            <h4>Basic mask creation</h4>
             <p>Analogous to how eyes perceive colors using receptors (red, green, and blue cones), images are composed of three channels or dimension corresponding to RGB.
                 Using simple thresholding for one of these channels, certain pixels/parts in the image can be removed.
                 <br><br>
@@ -181,7 +181,7 @@
         </div>
 
         <div id="morphological-operations">
-            <h4>3. Morphological Operations</h4>
+            <h4>Morphological Operations</h4>
             <p>When the colors of the images are too mixed, i.e. the foreground is not easily separable from the background using thresholding techniques, some operations can be done on the mask in order to improve the results.
                There are many operations but most of them can be traced back to two fundamental operations: erosion and dilation.
               <b>Erosion</b> is the process of "enlarging" the background pixels, transforming all the surrounding foreground pixels of a background pixel to background pixel.
@@ -201,9 +201,6 @@
                     <input type="range" min="1" max="20" value="1" step="1" class="slider morph" id="dilation">
                     <label for="dilation-slider" style="float: right;">Radius (dilation): 1px</label>
                 </div>
-                <!-- <div id="morphed-container">
-                    <img src="" alt="Select image first" id="morphed">
-                </div> -->
                 
                 <div class="threshold">
                     <div id="mask">
@@ -211,6 +208,8 @@
                             <img src="" id="morphed">
                         </div>
                     </div>
+                    <br>
+                    <br>
                     <div id="mask">
                         <div id="img-container">
                             <img src="" id="morphed-masked">
@@ -220,7 +219,7 @@
             </div>
         </div>
         <div id="closing-remarks">
-            <h4>4. Combination of operations</h4>
+            <h4>Combination of operations</h4>
             <p>In practice, a combination of these operations is usually done to process images.
             The two most commonly used operations are <b>closing</b> and <b>opening</b> operators.
             Closing, which is done by dilating then eroding the image, patches all holes in the image that are smaller than the structuring element.
@@ -293,7 +292,9 @@
             let selImg = document.querySelector("select#img").value
             // fetch('/apply_mask/erosion/'+selImg+'/'+rad).then(
                 // function (r){
-            document.querySelector("img#morphed").src = "data/masked_morphimg/morph_masked_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "erosion.png"
+            setTimeout(function(){
+                document.querySelector("img#morphed-masked").src = "data/masked_morphimg/morph_masked_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "erosion.png"
+            }, 500);
                 // }
             // )
         }
@@ -304,8 +305,10 @@
             let selImg = document.querySelector("select#img").value
             // fetch('/apply_mask/dilation/'+selImg+'/'+rad).then(
             //     function (r){
-            document.querySelector("img#morphed").src = "data/masked_morphimg/morph_masked_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
-                // }
+            setTimeout(function(){
+                document.querySelector("img#morphed-masked").src = "data/masked_morphimg/morph_masked_"+selImg.slice(0, -4)+ '-' + selImg.slice(selImg.length - 3)+"-" + rad + "-" + "dilation.png"
+            }, 500);
+            //     }
             // )
         }
 
@@ -323,6 +326,7 @@
         document.querySelector("button#apply-mask").addEventListener("click", applyMask)
         document.querySelector("input#erosion").addEventListener("change", erodeImage)
         document.querySelector("input#dilation").addEventListener("change", dilateImage)
+
         document.querySelector("input#erosion").addEventListener("change", erodeImageMask)
         document.querySelector("input#dilation").addEventListener("change", dilateImageMask)
         document.querySelector("input#erosion").addEventListener("change", changeRadiusErosion)
