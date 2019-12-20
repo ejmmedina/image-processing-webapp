@@ -63,7 +63,7 @@
         }
 
         #select-image {
-            width: 25%;
+            width: 30%;
             padding-right: 2%;
             float: left;
             position: fixed;
@@ -74,8 +74,8 @@
 
         #results {
             margin-top: 25px;
-            margin-left: 27%;
-            width: 70%;
+            margin-left: 32%;
+            width: 65%;
             float: left;
             overflow: auto;
             z-index: 10;
@@ -109,8 +109,9 @@
             padding-top: 250px;
         }
 
-        p {
+        p, li {
             text-align: justify;
+            font-size: 14px;
         }
         
 
@@ -120,9 +121,21 @@
     <div id='select-image'>
         <h3>Image Pre-processing</h3>
         <p>Image segmentation, an image processing technique, is the process of getting the foreground or removing the background of an image.
-            With emergence of deep learning architectures like Mask R-CNN, this process has become more accurate, overshadowing traditional image segmentation techniques.
+            With deep learning techniques like Mask R-CNN, this process has become more accurate, overshadowing traditional image segmentation techniques.
         <br>
-            However, for simple images, these traditional techniques are sufficient, which will be explored in this project.</p>
+            However, for simple images, these traditional techniques are sufficient, which will be explored in this project.
+        <br>
+        <br>
+            Please take these steps:
+            <ol>
+                <li>Select Image</li>
+                <li>Tweak the threshold range of each channel</li>
+                <li>Get the mask</li>
+                <li>Apply the mask on the chosen image</li>
+                <li>Apply erosion OR dilation of chosen radius on the mask and apply the mask</li>
+            </ol>
+        </p>
+            
         <h4>Select Image</h4>
         <select name="img" id="img">
             <option value="none" disabled hidden selected>--SELECT IMAGE--</option> 
