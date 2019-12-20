@@ -1,0 +1,38 @@
+#img-container {
+    width: 256px;
+    height: 256px;
+    text-align: center;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+    margin: 15px 5px;
+}
+
+.slider {
+    position: relative;
+    margin-left: 10px;
+}
+
+.slider#higher {
+    top: -30px;
+}
+
+.slider.red {
+    background: linear-gradient(to right, rgb(0,0,0) , rgb(255,0,0) );
+}
+
+.slider.green {
+    background: linear-gradient(to right, rgb(0,0,0) , rgb(0,255,0) );
+}
+
+.slider.blue {
+    background: linear-gradient(to right, rgb(0,0,0) , rgb(0,0,255) );
+}
+
+.slidecontainer {
+    width: 33%;
+    display: inline-block;
+    padding: 0px;
+}
