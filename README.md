@@ -5,7 +5,7 @@ This web application performs pre-processing on images, particularly on traditio
 
 ##### Deployment
 
-The project is initially deployed on a personal domain (that has already expired), hosted using Amazon's EC2 and nginx. 
+The project is initially deployed on a personal domain (that has already expired), hosted using Amazon's EC2, Flask, and nginx. 
 
 ##### Questions
 
